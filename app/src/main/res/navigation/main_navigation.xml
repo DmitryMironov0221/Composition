@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
     app:startDestination="@id/welcomeFragment">
@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_welcomeFragment_to_chooseLevelFragment2"
             app:destination="@id/chooseLevelFragment2" />
+        <action
+            android:id="@+id/action_welcomeFragment_to_game_results"
+            app:destination="@id/gameResultsFragment" />
     </fragment>
     <fragment
         android:id="@+id/chooseLevelFragment2"
@@ -33,14 +36,34 @@
         <argument
             android:name="level"
             app:argType="com.example.composition.domain.entity.Level" />
+    </fragment><fragment
+    android:id="@+id/gameFinishedFragment2"
+    android:name="com.example.composition.presentation.GameFinishedFragment"
+    android:label="fragment_game_finished"
+    tools:layout="@layout/fragment_game_finished" >
+    <argument
+        android:name="gameResult"
+        app:argType="com.example.composition.domain.entity.GameResult" />
+</fragment>
+    <fragment
+        android:id="@+id/gameResultsFragment"
+        android:name="com.example.composition.presentation.GameResultsFragment"
+        android:label="fragment_game_results"
+        tools:layout="@layout/fragment_game_results" >
+        <action
+            android:id="@+id/action_gameResultsFragment_to_gameResultItemDetailed"
+            app:destination="@id/gameResultItemDetailed">
+            <argument
+                android:name="gameResultId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
-        android:id="@+id/gameFinishedFragment2"
-        android:name="com.example.composition.presentation.GameFinishedFragment"
-        android:label="fragment_game_finished"
-        tools:layout="@layout/fragment_game_finished" >
+        android:id="@+id/gameResultItemDetailed"
+        android:name="com.example.composition.presentation.GameResultItemDetailed"
+        android:label="GameResultItemDetailed">
         <argument
-            android:name="gameResult"
-            app:argType="com.example.composition.domain.entity.GameResult" />
+            android:name="gameResultId"
+            app:argType="integer" />
     </fragment>
 </navigation>

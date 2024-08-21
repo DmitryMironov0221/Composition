@@ -24,4 +24,12 @@
     <string name="required_percentage">Необходимый процент правильных ответов: %s</string>
     <string name="required_score">Необходимое количество правильных ответов: %s</string>
     <string name="progress_answers">Правильных ответов %s (минимум %s)</string>
+    <string name="results">Результаты</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="winner_loser">Победа/Поражение %s: </string>
+    <string name="min_count_of_right_answers">Min count of right answers: </string>
+    <string name="count_of_right_answers">Count of right answers:</string>
+    <string name="min_percent_of_right_answers">Min percent of right answers:</string>
+    <string name="score_percent_eng">Score percent: </string>
 </resources>

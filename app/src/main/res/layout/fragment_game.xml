@@ -19,7 +19,7 @@
             android:id="@+id/tv_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginTop="25dp"
             android:text="@{viewModel.formattedTime}"
             android:textColor="@color/purple_700"
             android:textSize="24sp"

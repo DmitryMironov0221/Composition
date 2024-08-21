@@ -2,19 +2,26 @@ package com.example.composition.presentation
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.os.Build
 import android.os.CountDownTimer
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.composition.R
 import com.example.composition.data.GameRepositoryImpl
 import com.example.composition.domain.entity.GameResult
 import com.example.composition.domain.entity.GameSettings
 import com.example.composition.domain.entity.Level
 import com.example.composition.domain.entity.Question
+import com.example.composition.domain.usecases.AddGameResultsUseCase
 import com.example.composition.domain.usecases.GenerateQuestionUseCase
+import com.example.composition.domain.usecases.GetGameResultListUseCase
 import com.example.composition.domain.usecases.GetGameSettingsUseCase
+import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 
 class GameViewModel(
     private val application: Application,
@@ -23,10 +30,13 @@ class GameViewModel(
 
     private lateinit var gameSettings: GameSettings
 
-    private val repository = GameRepositoryImpl
+    private val repository = GameRepositoryImpl(application)
 
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
     private val getGameSettingsUseCase = GetGameSettingsUseCase(repository)
+    private val addGameResultUseCase = AddGameResultsUseCase(repository)
+    private val getGameResultListUseCase = GetGameResultListUseCase(repository)
+    val gameResultList: LiveData<List<GameResult>> = getGameResultListUseCase.getGameResult()
 
     private var timer: CountDownTimer? = null
 
@@ -124,6 +134,7 @@ class GameViewModel(
                 _formattedTime.value = formatTime(millisUntilFinished)
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onFinish() {
                 finishGame()
             }
@@ -142,19 +153,28 @@ class GameViewModel(
         return String.format("%02d:%02d", minutes, leftSeconds)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun finishGame() {
+        val id = 0
         _gameResult.value = GameResult(
+            id,
             enoughCount.value == true && enoughPercent.value == true,
             countOfRightAnswers,
             countOfQuestions,
+            LocalDateTime.now(),
             gameSettings
         )
+        viewModelScope.launch {
+            addGameResultUseCase.addGameResult(_gameResult.value!!)
+
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
         timer?.cancel()
     }
+
 
     companion object {
 
