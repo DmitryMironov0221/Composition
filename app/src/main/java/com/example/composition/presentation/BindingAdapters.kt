@@ -46,11 +46,13 @@ fun bindingScoreAnswers(textView: TextView, countAnswers: Int){
 
 @SuppressLint("StringFormatMatches")
 @BindingAdapter("scorePercentage")
-fun bindingScorePercentage(textView: TextView, gameResult: GameResult){
-    textView.text = String.format(
-        textView.context.getString(R.string.score_percentage),
-        getPercentOfRightAnswers(gameResult)
-    )
+fun bindingScorePercentage(textView: TextView, gameResult: GameResult?) {
+    gameResult?.let { // Проверяем, что gameResult не null
+        textView.text = String.format(
+            textView.context.getString(R.string.score_percentage),
+            getPercentOfRightAnswers(it)
+        )
+    }
 }
 private fun getPercentOfRightAnswers(gameResult: GameResult) = with(gameResult) {
     if (countOfQuestions == 0) {
@@ -105,4 +107,3 @@ fun bindingOnClickListener(textView: TextView, clickListener: OnOptionClickListe
         clickListener.onOptionClick(textView.text.toString().toInt())
     }
 }
-
